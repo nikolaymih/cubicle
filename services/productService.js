@@ -9,11 +9,12 @@ function getAll() {
 }
 
 function create(data) {
-    let cube = new Cube(uniqid(),
+    let cube = new Cube(
+        uniqid(),
         data.name,
         data.description,
         data.imageUrl,
-        data.level
+        data.difficultyLevel
     );
 
     productsData.push(cube);
@@ -27,5 +28,6 @@ function create(data) {
 }
 
 module.exports = {
+    getAll,
     create
 };
