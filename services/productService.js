@@ -7,7 +7,7 @@ const cube = require('../models/cube');
 async function getAll(query) {
     // let result = productData.getAll();
     // let result = Cube.getAll;
-    let result = await Cube.find().lean();
+    let result = await Cube.find({}).lean();
 
     if (query.search) {
         result = result.filter(x => x.name.toLowerCase().includes(query.search))
