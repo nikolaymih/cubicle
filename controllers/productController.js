@@ -5,9 +5,9 @@ const { validateProduct } = require('./helpers/productHelpers')
 const router = Router();
 
 router.get('/', (req, res) => {
-    let products = productService.getAll(req.query);
-    
-    res.render('home', { title: 'Browse', products });
+    productService.getAll(req.query)
+        .then((products) => res.render('home', { title: 'Browse', products }))
+        .catch(() => res.status(500).end())
 })
 
 router.get('/create', (req, res) => {
@@ -28,10 +28,10 @@ router.post('/create', (req, res) => {
         .catch(() => res.status(404).end())
 })
 
-router.get('/details/:productId', (req, res) => {
+router.get('/details/:productId', async (req, res) => {
 
-    let product = productService.getOne(req.params.productId);
-    console.log(product);
+    let product = await productService.getOne(req.params.productId);
+        console.log(product);
     res.render('details', { title: 'Product details', product });
 })
 
