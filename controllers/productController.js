@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const productService = require('../services/productService');
+const accessoryService = require('../services/accessoryService');
 const { validateProduct } = require('./helpers/productHelpers')
 
 const router = Router();
@@ -31,10 +32,16 @@ router.post('/create', (req, res) => {
 router.get('/details/:productId', async (req, res) => {
 
     let product = await productService.getOne(req.params.productId);
-        console.log(product);
+
     res.render('details', { title: 'Product details', product });
 })
 
+router.get('/:productId/attach', async (req, res) => {
+    let product = await productService.getOne(req.params.productId);
+    let accessories = await accessoryService.getAll();
+
+    res.render('attachAccessory', { product, accessories });
+})
 
 module.exports = router;
 
