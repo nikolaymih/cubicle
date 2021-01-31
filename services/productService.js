@@ -1,7 +1,7 @@
 const Cube = require('../models/cube');
 const productData = require('../data/productData');
 const mongoose = require('mongoose');
-const cube = require('../models/cube');
+const Accessory = require('../models/accessory');
 
 
 async function getAll(query) {
@@ -32,6 +32,10 @@ async function getOne(id) {
     return cube;
 }
 
+function getOneWithAccessories(id) {
+    return Cube.findById(id).populate('accessories').lean();
+}
+
 function create(data) {
     let cube = new Cube(data);
 
@@ -39,11 +43,20 @@ function create(data) {
     // този сейф е вграден в монгуус, не е нашият от модела.
 
     // fs.writeFile(path.join(__dirname, '/../config/products.json'), JSON.stringify(productsData), callback);
+}
 
+async function attachAccessory(productId, accessoryId) {
+    let product = await Cube.findById(productId);
+    let accessory = await Accessory.findById(accessoryId);
+
+    product.accessories.push(accessory);
+    return product.save();
 }
 
 module.exports = {
     getAll,
     getOne,
-    create
+    getOneWithAccessories,
+    create,
+    attachAccessory
 };

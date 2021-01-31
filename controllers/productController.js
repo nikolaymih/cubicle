@@ -31,16 +31,22 @@ router.post('/create', (req, res) => {
 
 router.get('/details/:productId', async (req, res) => {
 
-    let product = await productService.getOne(req.params.productId);
+    let product = await productService.getOneWithAccessories(req.params.productId);
 
     res.render('details', { title: 'Product details', product });
 })
 
 router.get('/:productId/attach', async (req, res) => {
     let product = await productService.getOne(req.params.productId);
-    let accessories = await accessoryService.getAll();
+    let accessories = await accessoryService.getAllWithout(product.accessories);
 
     res.render('attachAccessory', { product, accessories });
+})
+
+router.post('/:productId/attach', (req, res) => {
+    productService.attachAccessory(req.params.productId, req.body.accessory)
+        .then(() => res.redirect(`/products/details/${req.params.productId}`))
+        // .catch(() => console.log('eba si mamata'))
 })
 
 module.exports = router;
