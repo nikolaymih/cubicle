@@ -1,10 +1,11 @@
 const Cube = require('../models/cube');
-const uniqid = require('uniqid');
 const productData = require('../data/productData');
+const mongoose = require('mongoose');
+
 
 function getAll(query) {
-    // let result = productData.getAll();
-    let result = Cube.getAll;
+    let result = productData.getAll();
+    // let result = Cube.getAll;
 
     if (query.search) {
         result = result.filter(x => x.name.toLowerCase().includes(query.search))
@@ -21,21 +22,18 @@ function getAll(query) {
 }
 
 function getOne(id) {
-    return Cube.getOne(id);
+    return productData.getOne(id)
+    // return Cube.getOne(id);
 }
 
-function create(data, callback) {
-    let cube = new Cube(
-        uniqid(),
-        data.name,
-        data.description,
-        data.imageUrl,
-        data.difficultyLevel
-    );
+function create(data) {
+    let cube = new Cube(data);
+    console.log(cube);
 
     // fs.writeFile(path.join(__dirname, '/../config/products.json'), JSON.stringify(productsData), callback);
 
-    return cube.save();
+    return cube.save(); 
+    // този сейф е вграден в монгуус, не е нашият от модела.
 }
 
 module.exports = {

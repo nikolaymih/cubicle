@@ -14,7 +14,7 @@ router.get('/create', (req, res) => {
     res.render('create', { title: 'Browse', });
 })
 
-router.post('/create', validateProduct, (req, res) => {
+router.post('/create', (req, res) => {
 
     // productService.create(req.body, (err) => {
     //     if(err) {
